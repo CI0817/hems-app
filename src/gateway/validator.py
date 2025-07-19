@@ -54,3 +54,57 @@ class Validator:
                 print(f"Warning: Could not load schema {schema_file}. Error: {e}")
 
         return schemas
+    
+    def validate_message(self, topic: str, data: dict) -> bool:
+        """
+        Validates a data payload based on its MQTT topic.
+
+        It extracts the device, message type, and version from the topic to 
+        find the correct schema.
+
+        Args:
+            topic: The MQTT topic, e.g., 'home1/battery1/telemetry/v1'.
+            data: The JSON data payload (as a Python dictionary).
+
+        Returns:
+            True if the data is valid, False otherwise.
+        """
+        try:
+            # Extract the parts from the topic string to build the schema key
+            # e.g., 'home1/battery1/telemetry/v1' -> ['home1', 'battery1', 'telemetry', 'v1']
+            parts = topic.strip('/').split('/')
+            
+            # The topic must have 4 parts: home/device/type/version
+            if len(parts) < 4:
+                print(f"Invalid topic format: {topic}. Expected '<home>/<device>/<type>/<version>'.")
+                return False
+
+            device = parts[1]       # e.g., 'battery1'
+            message_type = parts[2] # e.g., 'telemetry'
+            version = parts[3]      # e.g., 'v1'
+            
+            # Construct the schema key from the topic parts
+            # e.g., 'battery1/telemetry.v1'
+            schema_key = f"{device}/{message_type}.{version}"
+
+            # Find the correct schema in our loaded schemas
+            schema = self.schemas.get(schema_key)
+
+            if not schema:
+                print(f"Validation failed: No schema found for key '{schema_key}' from topic '{topic}'")
+                return False
+
+            # The 'validate' function will raise a ValidationError if the data is invalid
+            validate(instance=data, schema=schema)
+            print(f"Data for topic '{topic}' is valid.")
+            return True
+
+        except ValidationError as e:
+            # The data did not match the schema
+            print(f"Validation failed for topic '{topic}'")
+            print(f"   Error: {e.message} in '{'.'.join(str(p) for p in e.path)}'")
+            return False
+        except Exception as e:
+            # Handle other potential errors, like a malformed topic
+            print(f"An unexpected error occurred during validation for topic '{topic}': {e}")
+            return False
