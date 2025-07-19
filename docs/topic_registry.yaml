@@ -1,0 +1,51 @@
+# docs/topic_registry.yaml
+topics:
+  # --- CONFIG -------------------------------------------------------------
+  "home1/+/config":
+    qos: 2
+    retain: true
+    comment: "Static device metadata; late joiners need it instantly"
+
+  # --- TELEMETRY ----------------------------------------------------------
+  "home1/+/telemetry/+":
+    qos: 0
+    retain: false
+    comment: "High-rate sensor data (power, SoC, weather)"
+
+  "home1/energy-market/telemetry/wholesale_price_c_per_kWh":
+    qos: 1
+    retain: false
+    comment: "5-min price tick drives optimiser; don't lose it"
+
+  # --- COMMAND CHANNEL ----------------------------------------------------
+  "home1/+/cmd/#":
+    qos: 1
+    retain: false
+    comment: "Optimiser to device commands"
+
+  "home1/+/event/cmd_ack":
+    qos: 1
+    retain: false
+    comment: "Device to optimiser acknowledgements"
+
+  # --- EVENTS & ALERTS ----------------------------------------------------
+  "home1/+/event/fault":
+    qos: 1
+    retain: false
+    comment: "Fault, breaker_trip, over_temp, etc."
+
+  "home1/weather/event/severe_weather_alert":
+    qos: 1
+    retain: false
+    comment: "API push of lightning, cyclone, etc."
+
+  "home1/+/event/arrival":
+    qos: 0
+    retain: false
+    comment: "Informational events (EV arrived, plug_inserted)"
+
+  # --- LAST‑WILL / ONLINE STATUS -----------------------------------------
+  "home1/+/event/online":
+    qos: 1
+    retain: true
+    comment: "Retained heartbeat published with `will` in MQTT connect"
