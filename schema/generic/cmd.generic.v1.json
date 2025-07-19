@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://example.com/schema/cmd.generic.v1.json",
   "title": "Optimiser command v1 (all components)",
   "allOf": [

@@ -108,3 +108,23 @@ class Validator:
             # Handle other potential errors, like a malformed topic
             print(f"An unexpected error occurred during validation for topic '{topic}': {e}")
             return False
+
+if __name__ == "__main__":
+    schema_path = "/Users/chhayirseng/Git/hems-app/schema"
+    validator = Validator(schema_path)
+
+    # Example test
+    test_topic = "home1/battery1/telemetry/v1"
+    test_data = {
+        "ts": "2025-07-20T10:00:00Z",
+        "ver": 1,
+        "cid": "test-client",
+        "src": "battery1",
+        "type": "telemetry",
+        "data": {
+            "soc_pct": 85
+        }
+    }
+
+    is_valid = validator.validate_message(test_topic, test_data)
+    print("Validation result:", is_valid)
