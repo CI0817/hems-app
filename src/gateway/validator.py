@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
-from jsonschema import validate, ValidationError
+import jsonschema
+from referencing import Registry
+from referencing.jsonschema import DRAFT7
 
 class Validator:
     """
@@ -17,10 +19,11 @@ class Validator:
         Args:
             schema_base_path: The file path to the root 'schemas' directory.
         """
-        self.schemas = self._load_schemas(schema_base_path)
+        self.schema_base_path = Path(__file__).parent.parent.parent / schema_base_path
+        self.schemas, self.registry = self._load_schemas()
         print(f"Validator initialized. {len(self.schemas)} schemas loaded.")
 
-    def _load_schemas(self, schema_base_path: str) -> dict:
+    def _load_schemas(self):
         """
         Scans the schema directory and loads all .json files.
 
@@ -29,21 +32,19 @@ class Validator:
         JSON schema objects.
 
         Returns:
-            A dictionary containing all the loaded schemas.
+            A tuple containing the schemas dictionary and the registry.
         """
         schemas = {}
-        base_path = Path(schema_base_path)
-        
-        if not base_path.is_dir():
-            print(f"Error: Schema directory not found at '{schema_base_path}'")
-            return schemas
+        if not self.schema_base_path.is_dir():
+            print(f"Error: Schema directory not found at '{self.schema_base_path}'")
+            return schemas, None
 
         # Find all .json files in the directory and its subdirectories
-        for schema_file in base_path.rglob('*.json'):
+        for schema_file in self.schema_base_path.rglob('*.json'):
             try:
                 # Create a unique key for the schema based on its path
                 # e.g., /path/to/schemas/battery1/telemetry.v1.json -> 'battery1/telemetry.v1'
-                key = '/'.join(schema_file.with_suffix('').parts[len(base_path.parts):])
+                key = '/'.join(schema_file.with_suffix('').parts[len(self.schema_base_path.parts):])
                 
                 with open(schema_file, 'r') as f:
                     schemas[key] = json.load(f)
@@ -53,7 +54,10 @@ class Validator:
             except Exception as e:
                 print(f"Warning: Could not load schema {schema_file}. Error: {e}")
 
-        return schemas
+        registry = Registry().with_resources(
+            (schema["$id"], DRAFT7.create_resource(schema)) for schema in schemas.values()
+        )
+        return schemas, registry
     
     def validate_message(self, topic: str, data: dict) -> bool:
         """
@@ -95,11 +99,12 @@ class Validator:
                 return False
 
             # The 'validate' function will raise a ValidationError if the data is invalid
-            validate(instance=data, schema=schema)
+            validator = jsonschema.Draft7Validator(schema, registry=self.registry)
+            validator.validate(instance=data)
             print(f"Data for topic '{topic}' is valid.")
             return True
 
-        except ValidationError as e:
+        except jsonschema.ValidationError as e:
             # The data did not match the schema
             print(f"Validation failed for topic '{topic}'")
             print(f"   Error: {e.message} in '{'.'.join(str(p) for p in e.path)}'")
@@ -110,7 +115,8 @@ class Validator:
             return False
 
 if __name__ == "__main__":
-    schema_path = "/Users/chhayirseng/Git/hems-app/schema"
+    # The path to the schema directory, relative to the project root.
+    schema_path = "schema"
     validator = Validator(schema_path)
 
     # Example test
@@ -122,7 +128,7 @@ if __name__ == "__main__":
         "src": "battery1",
         "type": "telemetry",
         "data": {
-            "soc_pct": 85
+            "soc_pct": 100
         }
     }
 
