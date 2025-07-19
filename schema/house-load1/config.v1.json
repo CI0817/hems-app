@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/house-load1.config.v1.json",
+  "title": "House load config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "house-load1" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["nominal_voltage", "location"],
+          "properties": {
+            "nominal_voltage": { "type": "number", "minimum": 0 },
+            "location":        { "type": "string" }
+          },
+          "additionalProperties": false}
+      }
+    }
+  ]
+}
+

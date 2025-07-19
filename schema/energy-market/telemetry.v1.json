@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/energy-market.telemetry.v1.json",
+  "title": "Energy‑market telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "energy-market" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["wholesale_price_c_per_kWh"],
+          "properties": {
+            "wholesale_price_c_per_kWh": { "type": "number" },
+            "price_run_id":              { "type": "string" },
+            "interval_start_utc":        { "type": "string", "format": "date-time" },
+            "currency":                  { "type": "string", "minLength": 3, "maxLength": 3 }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

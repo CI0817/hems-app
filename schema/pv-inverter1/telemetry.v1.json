@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/pv-inverter1.telemetry.v1.json",
+  "title": "PV‑inverter telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "pv-inverter1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["power_ac_w"],
+          "properties": {
+            "power_ac_w":   { "type": "number" },
+            "operating_state": { "type": "string" },
+            "voltage_v":    { "type": "number" },
+            "frequency_hz": { "type": "number" },
+            "daily_yield_wh": { "type": "number" },
+            "unit":         { "type": "string" },
+            "status":       { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

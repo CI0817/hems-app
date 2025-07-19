@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/ev1.telemetry.v1.json",
+  "title": "EV telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "ev1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["soc_pct"],
+          "properties": {
+            "soc_pct":                  { "type": "number", "minimum": 0, "maximum": 100 },
+            "power_limit_w":            { "type": "number" },
+            "departure_constraint_time":{ "type": "string", "format": "date-time" },
+            "usable_capacity_wh":       { "type": "number" },
+            "unit":                     { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

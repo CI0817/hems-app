@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/pv-inverter1.config.v1.json",
+  "title": "PV‑inverter config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "pv-inverter1" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["rated_power_w", "firmware", "serial"],
+          "properties": {
+            "rated_power_w": { "type": "number", "minimum": 0 },
+            "firmware":      { "type": "string" },
+            "serial":        { "type": "string" }
+          },
+          "additionalProperties": false}
+      }
+    }
+  ]
+}
+

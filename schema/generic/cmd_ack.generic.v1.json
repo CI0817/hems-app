@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/cmd_ack.generic.v1.json",
+  "title": "Command acknowledgement v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["cid","result"],
+      "properties": {
+        "type":   { "const": "cmd_ack" },
+        "cid":    { "type": "string" },
+        "result": { "type": "string", "enum": ["ok","error"] },
+        "code":   { "type": "integer" },
+        "message":{ "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

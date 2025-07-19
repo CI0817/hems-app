@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/ev-charger1.telemetry.v1.json",
+  "title": "EV‑charger telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "ev-charger1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["connection_status"],
+          "properties": {
+            "connection_status": { "type": "string", "enum": ["connected","disconnected","fault"] },
+            "power_flow_w":      { "type": "number" },
+            "session_energy_wh": { "type": "number" },
+            "unit":              { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

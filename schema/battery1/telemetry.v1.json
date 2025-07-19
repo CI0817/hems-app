@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/battery1.telemetry.v1.json",
+  "title": "Battery telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "battery1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["soc_pct"],
+          "properties": {
+            "soc_pct":              { "type": "number", "minimum": 0, "maximum": 100 },
+            "power_limit_w":        { "type": "number" },
+            "usable_capacity_wh":   { "type": "number", "minimum": 0 },
+            "reserve_threshold_pct":{ "type": "number", "minimum": 0, "maximum": 100 },
+            "unit":                 { "type": "string" },
+            "status":               { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}
