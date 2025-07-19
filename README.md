@@ -29,3 +29,10 @@ Communications between the micro-services and the edge gateway are done via MQTT
 ### Database
 
 A microservice is used to log the data coming from all the devices for future analysis and historical data graphing.
+
+### Up-stream and Down-stream Communications
+
+Up-stream communications are done from the devices to the HEMS micro-services, the UI, and the database, also known as data reporting. Down-stream communications are done from the HEMS micro-services that issue commands to the devices, alaso known as controlling.
+
+## MQTT Topics Taxonomy
+
