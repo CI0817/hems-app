@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/cmd.generic.v1.json",
+  "title": "Optimiser command v1 (all components)",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["cmd","params","timeout_s"],
+      "properties": {
+        "src":        { "const": "optimizer" },
+        "type":       { "const": "cmd" },
+        "cmd":        { "type": "string" },
+        "params":     { "type": "object" },
+        "timeout_s":  { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

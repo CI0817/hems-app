@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/event.generic.v1.json",
+  "title": "Device / system event v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["event","detail"],
+      "properties": {
+        "type":  { "const": "event" },
+        "event": { "type": "string" },
+        "detail":{ "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

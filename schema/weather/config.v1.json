@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/weather.config.v1.json",
+  "title": "Weather station config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "weather" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["station_id","lat","lon"],
+          "properties": {
+            "station_id": { "type": "string" },
+            "lat":        { "type": "number", "minimum": -90, "maximum": 90 },
+            "lon":        { "type": "number", "minimum": -180, "maximum": 180 },
+            "firmware":   { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

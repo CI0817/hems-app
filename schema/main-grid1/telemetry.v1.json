@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/main-grid1.telemetry.v1.json",
+  "title": "Main‑grid telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "main-grid1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["power_ac_w"],
+          "properties": {
+            "power_ac_w": { "type": "number" },
+            "voltage_v":  { "type": "number" },
+            "frequency_hz":{ "type": "number" },
+            "unit":       { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

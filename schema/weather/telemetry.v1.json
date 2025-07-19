@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/weather.telemetry.v1.json",
+  "title": "Weather telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "weather" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["ghi_wm2"],
+          "properties": {
+            "ghi_wm2":        { "type": "number" },
+            "ambient_temp_c": { "type": "number" },
+            "wind_speed_ms":  { "type": "number" },
+            "unit":           { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

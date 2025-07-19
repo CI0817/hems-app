@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/ev-charger1.config.v1.json",
+  "title": "EV‑charger config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "ev-charger1" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["max_power_w", "model", "plug_type"],
+          "properties": {
+            "max_power_w": { "type": "number", "minimum": 0 },
+            "model":       { "type": "string" },
+            "plug_type":   { "type": "string" }
+          },
+          "additionalProperties": false}
+      }
+    }
+  ]
+}
+

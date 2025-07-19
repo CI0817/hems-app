@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/house-load1.telemetry.v1.json",
+  "title": "House‑load telemetry v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "house-load1" },
+        "type": { "const": "telemetry" },
+        "data": {
+          "type": "object",
+          "required": ["power_ac_w"],
+          "properties": {
+            "power_ac_w": { "type": "number" },
+            "unit":       { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

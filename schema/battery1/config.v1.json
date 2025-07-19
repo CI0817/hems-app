@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/battery1.config.v1.json",
+  "title": "Battery config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "battery1" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["total_capacity_wh","chemistry"],
+          "properties": {
+            "total_capacity_wh": { "type": "number", "minimum": 0 },
+            "chemistry":         { "type": "string" },
+            "manufacturer":      { "type": "string" },
+            "firmware":          { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

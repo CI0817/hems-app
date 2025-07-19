@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schema/ev1.config.v1.json",
+  "title": "EV config v1",
+  "allOf": [
+    { "$ref": "common-envelope.json" },
+    {
+      "required": ["data"],
+      "properties": {
+        "src":  { "const": "ev1" },
+        "type": { "const": "config" },
+        "data": {
+          "type": "object",
+          "required": ["battery_capacity_wh", "vin", "owner_id"],
+          "properties": {
+            "battery_capacity_wh": { "type": "number", "minimum": 0 },
+            "vin":                 { "type": "string", "minLength": 11, "maxLength": 17 },
+            "owner_id":            { "type": "string" }
+          },
+          "additionalProperties": false}
+      }
+    }
+  ]
+}
+
